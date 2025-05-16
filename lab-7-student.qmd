@@ -84,12 +84,63 @@ Detective Wickham reaches out to you...
 
 **Step 1: Find the police report in `crime_scene_report`. Then used the information in the report to move on to the next data source based on the information learned.**
 
-```{r}
+```{r Initial report}
 # Code for looking at the relevant crime scene report.
-
-
+crime_scene_report %>% 
+  select(date, city, type, description) %>% 
+  filter(city == "SQL City") %>% 
+  filter(type == "murder") %>% 
+  filter(date == 20180115) 
+# Security footage shows that there were 2 witnesses. The first witness lives at the last house on "Northwestern Dr". The second witness, named Annabel, lives somewhere on "Franklin Ave".
 ```
 
+```{r step 2}
+person %>% 
+  select(name, address_number, address_street_name, id) %>% 
+  filter(address_street_name == "Franklin Ave") 
+#Annabel Miller, 103 Franklin Ave, id: 16371
+
+person %>% 
+  select(name, address_number, address_street_name, id) %>% 
+  filter(address_street_name == "Northwestern Dr") %>% 
+  arrange(desc(address_number)) 
+#Morty Schapiro, 4919 Northwestern Dr, id: 14887
+```
+```{r id interview}
+#Annabel Miller, 103 Franklin Ave, id: 16371
+interview %>%
+  select(person_id, transcript) %>% 
+  filter(person_id == 16371)
+#transcript: "I saw the murder happen, and I recognized the killer from my gym when I was working out last week on January the 9th."
+
+get_fit_now_check_in <- rename(get_fit_now_check_in, "id" = "membership_id")
+gym <- full_join(get_fit_now_check_in, get_fit_now_member)
+
+gym %>% 
+  select(check_in_date, check_in_time, id, name, membership_status ) %>% 
+  filter(check_in_date == 20180109)
+#20180109	check in time:1600	id:48Z7A	Joe Germuska	(gold)
+#20180109	check in time:1530	id:48Z55	Jeremy Bowers (gold)
+
+person %>% 
+  filter(name == "Joe Germuska") 
+#license_id : 173289 (none found)
+
+person %>% 
+  filter(name == "Jeremy Bowers")
+#license_id: 423327
+
+drivers_license %>% 
+  select(id, plate_number, car_make, car_model) %>% 
+  filter(id == 423327)
+#Jeremy Bowers license plate corresponds Morty's clue of H42W, License Plate: 0H42W2
+
+#Morty Schapiro, 4919 Northwestern Dr, id: 14887
+interview %>%
+  select(person_id, transcript) %>% 
+  filter(person_id == 14887)
+#transcript: 	"I heard a gunshot and then saw a man run out. He had a "Get Fit Now Gym" bag. The membership number on the bag started with "48Z". Only gold members have those bags. The man got into a car with a plate that included "H42W"."
+```
 
 
 
