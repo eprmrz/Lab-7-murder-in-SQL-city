@@ -126,6 +126,12 @@ person %>%
   filter(name == "Joe Germuska") 
 #license_id : 173289 (none found)
 
+#Morty Schapiro, 4919 Northwestern Dr, id: 14887
+interview %>%
+  select(person_id, transcript) %>% 
+  filter(person_id == 14887)
+#transcript: 	"I heard a gunshot and then saw a man run out. He had a "Get Fit Now Gym" bag. The membership number on the bag started with "48Z". Only gold members have those bags. The man got into a car with a plate that included "H42W"."
+
 person %>% 
   filter(name == "Jeremy Bowers")
 #license_id: 423327
@@ -135,11 +141,33 @@ drivers_license %>%
   filter(id == 423327)
 #Jeremy Bowers license plate corresponds Morty's clue of H42W, License Plate: 0H42W2
 
-#Morty Schapiro, 4919 Northwestern Dr, id: 14887
-interview %>%
-  select(person_id, transcript) %>% 
-  filter(person_id == 14887)
-#transcript: 	"I heard a gunshot and then saw a man run out. He had a "Get Fit Now Gym" bag. The membership number on the bag started with "48Z". Only gold members have those bags. The man got into a car with a plate that included "H42W"."
+person %>% 
+  filter(name == "Jeremy Bowers")
+#license_id: 423327, id: 67318
+interview %>% 
+   select(person_id, transcript) %>% 
+   filter(person_id == 67318)
+#transcript: "I was hired by a woman with a lot of money. I don't know her name but I know she's around 5'5" (65") or 5'7" (67"). She has red hair and she drives a Tesla Model S. I know that she attended the SQL Symphony Concert 3 times in December 2017."
+
+facebook_event_checkin %>%
+  select(date, person_id, event_id, event_name) %>% 
+  filter(person_id == 99716) #also 24556 <- except, this is a guy
+
+person %>% 
+  select(name, address_number, address_street_name, id, ssn, license_id) %>%
+  filter(id == 99716)
+# Miranda Priestly	1883	Golden Ave, id: 99716, ssn: 987756388, license id: 202298
+
+income %>% 
+  select(ssn, annual_income) %>% 
+  filter(ssn == 987756388)
+#Miranda Priestly makes $310,000 annually
+
+drivers_license %>% 
+  select(id, age, height, hair_color, eye_color, gender, plate_number, car_make, car_model) %>% 
+  filter(id == 202298)
+#Red hair, height, female, and Tesla Model S checks out.
+
 ```
 
 
@@ -163,5 +191,5 @@ tables manually. Functions from `stringr` and `lubridate` will also be useful.
 ::: callout-note
 ## And the final suspect is...
 
-*put the name of the person responsible for the murder here.*
+*Miranda Priestly*
 :::
